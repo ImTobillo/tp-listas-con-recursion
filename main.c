@@ -60,6 +60,14 @@ void mostrarListaInvert (nodo* lista)
     }
 }
 
+int retSumaLista (nodo* lista)
+{
+    if (lista)
+        return lista->dato + retSumaLista(lista->sig);
+    else
+        return 0;
+}
+
 /// MAIN
 
 int main()
@@ -77,6 +85,10 @@ int main()
     mostrarLista(lista);
     printf("\n");
     mostrarListaInvert(lista);
+    printf("\n");
+
+    printf("\nLa suma de los datos de la lista es: %i\n", retSumaLista(lista));
+
 
     return 0;
 }
