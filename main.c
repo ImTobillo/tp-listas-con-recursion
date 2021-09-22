@@ -96,13 +96,7 @@ void agregarNodoAlFinal (nodo** lista, nodo* agreg)
 
 void agregarNodoAlPrincipio (nodo** lista, nodo* agreg)
 {
-    if (*lista)
-    {
         agreg->sig = *lista;
-
-        *lista = agreg;
-    }
-    else
         *lista = agreg;
 }
 
@@ -126,50 +120,34 @@ void invertirListaRec (nodo** lista, nodo* listaAux) // aux inicializado en NULL
         *lista = listaAux; // solucion trivial
 }
 
-void borrarNodoRec (nodo** lista, nodo** ant, nodo** act, int dato)
+void borrarNodoRec (nodo** lista, int dato)
 {
-    nodo* aux;
-
-    if ((*lista)->dato == dato) // 1er condicion de corte (¿?)
+    if (*lista)
     {
-        aux = *lista;
-        *lista = *act;     // 1ra solucion trivial (¿?)
-        free(ant);
-    }
-    else if (*act)
-    {
-        if ((*act)->dato == dato) // 2da condicion de corte
+        if ((*lista)->dato == dato) // condicion de corte
         {
-            aux = *act;
-            (*ant)->sig = (*act)->sig;    // 2da solucion trivial
-            free(aux);
+            nodo* aux = *lista;     //
+            *lista = (*lista)->sig; // solucion trivial
+            free(aux);              //
         }
         else
-            borrarNodoRec(lista, &(*ant)->sig, &(*act)->sig, dato); // llamada recursiva y acercamientos
+            borrarNodoRec(&(*lista)->sig, dato); // llamada recursiva y acercamiento
     }
 }
 
-void insertarOrdenadoRec (nodo** lista, nodo** ant, nodo** act, int dato)
+void insertarOrdenadoRec (nodo** lista, int dato)
 {
-    if (dato < (*lista)->dato)
+    if (*lista)
     {
-        nodo* aux = crearNodo(dato);
-        aux->sig = *lista;
-        *lista = aux;
-    }
-    else if (*act)
-    {
-        if (dato < (*act)->dato)
+        if (dato < (*lista)->dato)
         {
             nodo* aux = crearNodo(dato);
-            aux->sig = *act;
-            (*ant)->sig = aux;
+            aux->sig = *lista;
+            *lista = aux;
         }
         else
-            insertarOrdenadoRec(lista, &(*ant)->sig, &(*act)->sig, dato);
+            insertarOrdenadoRec(&(*lista)->sig, dato);
     }
-    else
-        (*ant)->sig = crearNodo(dato);
 }
 
 /// MAIN
@@ -202,12 +180,12 @@ int main()
     invertirListaRec(&lista, NULL);
     mostrarLista(lista);
 
-    printf("\nDESPUES DE BORRAR EL 7\n");
-    borrarNodoRec(&lista, &lista, &lista->sig, 7);
+    printf("\nDESPUES DE BORRAR EL 9\n");
+    borrarNodoRec(&lista, 9);
     mostrarLista(lista);
 
-    printf("\nDESPUES DE INSERTAR\n");
-    insertarOrdenadoRec(&lista, &lista, &lista->sig, 3);
+    printf("\nDESPUES DE INSERTAR EL 3\n");
+    insertarOrdenadoRec(&lista, 3);
     mostrarLista(lista);
     return 0;
 }
